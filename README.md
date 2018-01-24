@@ -10,16 +10,16 @@ docker build -t sparklyrocker .
 docker run -d -p 8787:8787 sparklyrocker
 ````
 
-Connect to (localhost:8787) and feel free to run the sparklyr_demo.R demo.
+Connect to [localhost:8787] and feel free to run the sparklyr_demo.R demo.
 
 ## TODO
 
 Add code and instructions to build and run this image on Google Cloud connect
-dirctly to a dataproc cluster, similar to these [instructions](https://www.jasperginn.nl/using-rstudio-and-sparklyr-with-a-google-dataproc-cluster/)
+directly to a [dataproc cluster](https://cloud.google.com/dataproc/?hl=de), similar to these [instructions](https://www.jasperginn.nl/using-rstudio-and-sparklyr-with-a-google-dataproc-cluster/)
 by Jasper Ginn.
 
 
-## See also
+## More R resources
 
-(http://www.mjdenny.com/Rcpp_Intro.html)
-(https://teuder.github.io/rcpp4everyone_en/)
+[http://www.mjdenny.com/Rcpp_Intro.html]
+[https://teuder.github.io/rcpp4everyone_en/]
