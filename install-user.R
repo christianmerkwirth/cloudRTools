@@ -1,5 +1,0 @@
-install.packages("devtools", "/home/rstudio/R/x86_64-pc-linux-gnu-library/3.4", repos="http://cran.rstudio.com/")
-devtools::install_github("hadley/tidyverse")
-devtools::install_github("rstudio/sparklyr")
-library(sparklyr)
-spark_install(version = "2.2.0")
