@@ -31,17 +31,28 @@ if [[ "${ROLE}" == 'Master' ]]; then
   fi
   gcloud docker -- pull ${DOCKER_IMAGE}
 
-  # Expose every possible spark configuration to the container.
-  VOLUMES=$(echo /etc/{hadoop*,hive*,*spark*} /usr/lib/hadoop/lib/{gcs,bigquery}*)
+  # Expose every possible spark configuration and lib directory from the host
+  # o the container. Fortunately both host and Docker base are Debian.
+  VOLUMES=$(echo /etc/{hadoop*,hive*,*spark*}  \
+           /etc/alternatives/{hadoop*,hive*,*spark*} \
+           /hadoop \
+           /usr/lib/spark \
+           /usr/lib/hadoop/ \
+           /usr/lib/hadoop-hdfs \
+           /usr/lib/hadoop-mapreduce \
+           /usr/lib/hadoop-yarn \
+           /usr/lib/hive)
+
   VOLUME_FLAGS=$(echo ${VOLUMES} | sed 's/\S*/-v &:&/g')
   echo "VOLUME_FLAGS: ${VOLUME_FLAGS}"
 
   # Docker gives a "too many symlinks" error if volumes are not yet automounted.
   # Ensure that the volumes are mounted to avoid the error.
+  # We explicitely mount the Spark and Hadoop directories on the host machine.
+  # Our image has a local spark installation under /home/rstudio/spark which
+  # should not interfere with this.
   touch ${VOLUMES}
   if docker run -d --restart always --net=host \
-     -v /usr/lib/spark:/usr/lib/spark \
-     -v /usr/lib/hadoop:/usr/lib/hadoop \
       ${VOLUME_FLAGS} ${DOCKER_IMAGE}; then
     echo 'RStudio docker image deployed.'
     exit

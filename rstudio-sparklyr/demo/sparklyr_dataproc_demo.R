@@ -4,16 +4,14 @@ library(tidyverse)
 library(lubridate)
 library(ggplot2)
 
-# Settings for spark
-#Sys.setenv(SPARK_HOME="/usr/lib/spark")
+# Setting environment vars for Spark.
+Sys.setenv(SPARK_HOME="/usr/lib/spark")
+Sys.setenv(JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre/")
 
 config <- spark_config()
 
 # Connect to spark on master node
-sc <- spark_connect(master = "yarn-client", config = config, version = '1.6.2')
-# http://master-host-name:8088
-
-
+sc <- spark_connect(master = "yarn-client", spark_home = "/usr/lib/spark")
 
 iris_tbl <- copy_to(sc, iris)
 flights_tbl <- copy_to(sc, nycflights13::flights, "flights")
@@ -42,10 +40,3 @@ g<- g + scale_size_area(max_size = 2)
 print(g)
 
 ggsave(filename = 'gpplot_example.pdf', plot = g)
-
-spark_apply(
-  iris_tbl,
-  function(e) { broom::tidy(lm(Petal_Width ~ Petal_Length, e)) },
-  names = c("term", "estimate", "std.error", "statistic", "p.value"),
-  group_by = "Species"
-)

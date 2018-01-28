@@ -19,3 +19,4 @@ RUN apt update && apt install r-cran-rjava -y \
 COPY demo/ /home/rstudio/demo/
 RUN mv /root/spark/ /home/rstudio/ && chown -R rstudio:rstudio /home/rstudio/ && rm -rf /tmp/*
 ENV SPARK_HOME /home/rstudio/spark
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
