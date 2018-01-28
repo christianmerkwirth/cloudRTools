@@ -31,6 +31,12 @@ if [[ "${ROLE}" == 'Master' ]]; then
   fi
   gcloud docker -- pull ${DOCKER_IMAGE}
 
+  useradd rstudio
+  echo "rstudio:rstudio" | chpasswd
+	mkdir /home/rstudio
+	chown rstudio:rstudio /home/rstudio
+	addgroup rstudio staff
+
   # Expose every possible spark configuration and lib directory from the host
   # o the container. Fortunately both host and Docker base are Debian.
   VOLUMES=$(echo /etc/{hadoop*,hive*,*spark*}  \
@@ -53,6 +59,7 @@ if [[ "${ROLE}" == 'Master' ]]; then
   # should not interfere with this.
   touch ${VOLUMES}
   if docker run -d --restart always --net=host \
+      -v /home/rstudio:/host/home/rstudio \
       ${VOLUME_FLAGS} ${DOCKER_IMAGE}; then
     echo 'RStudio docker image deployed.'
     exit

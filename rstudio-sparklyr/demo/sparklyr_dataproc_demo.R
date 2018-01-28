@@ -13,30 +13,35 @@ config <- spark_config()
 # Connect to spark on master node
 sc <- spark_connect(master = "yarn-client", spark_home = "/usr/lib/spark")
 
-iris_tbl <- copy_to(sc, iris)
-flights_tbl <- copy_to(sc, nycflights13::flights, "flights")
-batting_tbl <- copy_to(sc, Lahman::Batting, "batting")
-src_tbls(sc)
+spark_read_csv(sc, "flights_spark_2008", "gs://christianmerkwirth/rstudo-sparklyr/dataexpo/2009/2008.csv.bz2", memory = FALSE)
 
-# filter by departure delay and print the first few records
-flights_tbl %>% filter(dep_delay == 2)
+flights_table <- tbl(sc,"flights_spark_2008") %>%
+  mutate(DepDelay = as.numeric(DepDelay),
+         ArrDelay = as.numeric(ArrDelay),
+         DepDelay > 15 , DepDelay < 240,
+         ArrDelay > -60 , ArrDelay < 360,
+         Gain = DepDelay - ArrDelay) %>%
+  filter(ArrDelay > 0) %>%
+  select(Origin, Dest, UniqueCarrier, Distance, DepDelay, ArrDelay, Gain)
 
-delay <- flights_tbl %>%
-  group_by(tailnum) %>%
-  summarise(count = n(), dist = mean(distance), delay = mean(arr_delay)) %>%
-  filter(count > 20, dist < 2000, !is.na(delay)) %>%
-  collect
+sdf_register(flights_table, "flights_spark")
 
-# plot delays
-g <- ggplot(delay, aes(x = dist, y = delay))
+tbl_cache(sc, "flights_spark")
 
-g <- g + geom_point(aes(size = count, col = count), alpha = 1/2)
-print(g)
+spark_read_csv(sc, "flights_spark_2007" , "gs://christianmerkwirth/rstudo-sparklyr/dataexpo/2009/2007.csv.bz2", memory = FALSE)
 
-g <- g + geom_smooth()
-print(g)
+all_flights <- tbl(sc, "flights_spark_2008") %>%
+  union(tbl(sc, "flights_spark_2007")) %>%
+  group_by(Year, Month) %>%
+  tally()
 
-g<- g + scale_size_area(max_size = 2)
-print(g)
+all_flights <- all_flights %>%
+  collect()
 
-ggsave(filename = 'gpplot_example.pdf', plot = g)
+ggplot(data = all_flights, aes(x = Month, y = n/1000, fill = factor(Year))) +
+  geom_area(position = "dodge", alpha = 0.5) +
+  geom_line(alpha = 0.4) +
+  scale_fill_brewer(palette = "Dark2", name = "Year") +
+  scale_x_continuous(breaks = 1:12, labels = c("J","F","M","A","M","J","J","A","S","O","N","D")) +
+  theme_light() +
+  labs(y="Number of Flights (Thousands)", title = "Number of Flights Year-Over-Year")

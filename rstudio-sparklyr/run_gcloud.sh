@@ -64,7 +64,7 @@ gcloud beta dataproc \
 #--user-data-dir=/tmp/sparklyr-cluster-m
 
 ## Now we can log into the localhost:8787 and continue there with R commands.
-## loginn: rstudio, password: rstudio
+## login: rstudio, password: rstudio
 
 
 
