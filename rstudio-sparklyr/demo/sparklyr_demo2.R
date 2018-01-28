@@ -25,7 +25,7 @@ sdf_register(flights_table, "flights_spark")
 tbl_cache(sc, "flights_spark")
 
 spark_read_csv(sc, "flights_spark_2007" , "2007.csv.bz2", memory = FALSE)
-U
+
 all_flights <- tbl(sc, "flights_spark_2008") %>%
   union(tbl(sc, "flights_spark_2007")) %>%
   group_by(Year, Month) %>%
