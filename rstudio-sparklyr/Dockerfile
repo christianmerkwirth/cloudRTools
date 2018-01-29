@@ -11,6 +11,8 @@ RUN apt update && apt install r-cran-rjava -y \
      testthat \
      xgboost \
      knitr \
+     googleComputeEngineR \
+     googleCloudStorageR \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/ \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
