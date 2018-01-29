@@ -68,4 +68,49 @@ if [[ "${ROLE}" == 'Master' ]]; then
   echo 'Failed to run Cloud Datalab' >&2
   exit 1
 fi
-## TODO: Install base-R with a few packages on the worker nodes to enable spark_apply.
+## Install base-R with a few packages on the worker nodes to enable spark_apply.
+  if [[ "${ROLE}" == 'Worker' ]]; then
+  	apt-get update && apt-get install -y --no-install-recommends \
+      ed \
+      less \
+      locales \
+      vim-tiny \
+      wget \
+      ca-certificates \
+      fonts-texgyre \
+      libxml2-dev \
+      libsqlite-dev \
+      libpq-dev \
+      libssh2-1-dev
+
+  echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen en_US.utf8 \
+    && /usr/sbin/update-locale LANG=en_US.UTF-8
+
+  # This should install R to
+  apt-get update \
+  	&& apt-get install -y --no-install-recommends \
+  		littler \
+  		r-base \
+  		r-base-dev \
+  		r-recommended
+
+    echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
+    echo 'source("/etc/R/Rprofile.site")' >> /etc/littler.r
+
+  	ln -s /usr/share/doc/littler/examples/install.r /usr/local/bin/install.r
+  	ln -s /usr/share/doc/littler/examples/install2.r /usr/local/bin/install2.r
+  	ln -s /usr/share/doc/littler/examples/installGithub.r /usr/local/bin/installGithub.r
+  	ln -s /usr/share/doc/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r
+  	install.r docopt
+
+    ## TODO: This is a bit heavy and might slow-down the cluster setup process
+    ## way too much. Check if we can live with less pre-installed packages.
+    install2.r --deps TRUE \
+        devtools \
+        dplyr \
+        tidyr \
+        stringr \
+        data.table
+    ##R -e 'devtools::install_github("rstudio/sparklyr")'
+fi
