@@ -38,10 +38,13 @@ all_flights <- tbl(sc, "flights_spark_2008") %>%
 all_flights <- all_flights %>%
   collect()
 
-ggplot(data = all_flights, aes(x = Month, y = n/1000, fill = factor(Year))) +
+g <- ggplot(data = all_flights, aes(x = Month, y = n/1000, fill = factor(Year))) +
   geom_area(position = "dodge", alpha = 0.5) +
   geom_line(alpha = 0.4) +
   scale_fill_brewer(palette = "Dark2", name = "Year") +
   scale_x_continuous(breaks = 1:12, labels = c("J","F","M","A","M","J","J","A","S","O","N","D")) +
   theme_light() +
   labs(y="Number of Flights (Thousands)", title = "Number of Flights Year-Over-Year")
+print(g)
+
+spark_disconnect(sc)

@@ -1,6 +1,7 @@
 # A Spark-ready RStudio Server Docker Image
 
-This directory contains code and instructions to build a Spark-ready RStudio Server Docker image.
+This directory contains code and instructions to build a
+[Sparklyr](http://spark.rstudio.com/)-ready RStudio Server Docker image.
 
 ## Building and running the Docker image locally
 
@@ -12,19 +13,36 @@ docker run --rm -d -p 8787:8787 sparklyrocker:latest
 
 ## Running an Rstudio-Server with Sparklyr on a Google Dataproc cluster
 
-Google Cloud offers managed Spark clusters named [dataproc clusters](https://cloud.google.com/dataproc/?hl=en). The main idea there
-is to  download and run our custom Rstudio-Sparklyr Rocker image on a Dataproc master node during cluster setup. Later we
-connect to RStudio on the Dataproc master node using an SSH tunnel. Google also offers a Docker image build service which we happily
-use to build our Rstudio-Sparklyr Rocker before setting up the Dataproc cluster.
+Google Cloud offers managed Spark clusters named [dataproc clusters](https://cloud.google.com/dataproc/?hl=en).
+
+The main idea of this project is to use Google Dataproc as super fast and convenient option to set up a Spark cluster.
+During setup of the cluster, the initialization script will automatically download and run our custom
+Rstudio-Sparklyr Rocker image on a Dataproc master node during cluster setup. Later we connect to the RStudio Server
+on the Dataproc master node using an SSH tunnel. Thus we get R running in the cloud, attached to a managed,
+scalable Spark cluster. We pay only for the minutes the Spark cluster is up and running. After doing computations,
+we delete the cluster to avoid any additional costs.
+
+Google also offers a Docker image build service which we happily use to build our Rstudio-Sparklyr Rocker
+before setting up the Dataproc cluster.
+
+## Prereqs
+
+Before running this script, make sure that:
+
+* You have a Google Cloud account.
+* You have a project set up on GCloud with sufficient billing.
+* You choose a region and a zone.
+* You create a Google Storage bucket for the setup files.
+* You are familiar with nagivation the Google Cloud console.
+* You have [Google Cloud SDK](https://cloud.google.com/sdk/) tools installed, configured and authenticated.
 
 ## Quickstart
 
-Before running this script, make sure that you have Google Cloud CLI tools installed and authenticated to your Google Cloud account.
-You need to have a project set up on GCloud with sufficient billing. Note that significant costs may occur depending on the usage.
-Please remember to delete any GCloud resources not longer in use.
+Note that significant costs may occur depending on the usage. Please remember to delete any GCloud resources not longer in use.
+If you feel confident to proceed, clone this github repo, edit and run the run_gcloud script.
 
-If you feel confident to proceed, edit and run the run_gcloud script.
 ```bash
+cd rstudio-sparklyr
 source run_gcloud.sh
 ```
 
@@ -36,6 +54,21 @@ possibilites to connect:
 * SSH tunneling of port 8787.
 
 RStudio should have be all necessary packages onboard to connect to the Spark cluster. See the provided demos for details.
+
+Within the RStudio session on the Dataproc master node, run:
+```R
+source('demo/sparklyr_dataproc_demo.R')
+```
+
+## Getting data in and about
+
+**DRAFT**
+Since both the Dataproc cluster and the Docker container running RStudio are epheremal, we need a way to get input data
+into and result data out. Google Cloud storage seems the ideal way of persisting data. Two R packages seem promising here:
+
+* [googleCloudStorageR](https://github.com/cloudyr/googleCloudStorageR)
+* [googleComputeEngineR](https://github.com/cloudyr/googleComputeEngineR)
+
 
 ## Notes
 
