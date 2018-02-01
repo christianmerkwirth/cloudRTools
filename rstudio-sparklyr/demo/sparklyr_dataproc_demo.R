@@ -1,8 +1,8 @@
-library(sparklyr)
 library(dplyr)
 library(tidyverse)
 library(lubridate)
 library(ggplot2)
+library(sparklyr)
 
 # Setting environment vars for Spark.
 Sys.setenv(SPARK_HOME="/usr/lib/spark")

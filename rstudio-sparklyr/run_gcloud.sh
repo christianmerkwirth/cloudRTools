@@ -21,7 +21,7 @@ gcloud components update
 ## Build the Rocker image. GCloud claims that first 120 min of build time of a
 # day are free.
 IMAGE=gcr.io/${PROJECT_ID}/${ROCKER_IMAGE}:latest
-gcloud container builds submit --tag gcr.io/${PROJECT_ID}/${ROCKER_IMAGE} --timeout=1h .
+#gcloud container builds submit --tag gcr.io/${PROJECT_ID}/${ROCKER_IMAGE} --timeout=1h .
 
 ## Make sure we see a description of the freshly created image here.
 gcloud container images  describe ${IMAGE}

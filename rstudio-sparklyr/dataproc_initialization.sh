@@ -95,22 +95,24 @@ fi
   		r-base-dev \
   		r-recommended
 
-    echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
-    echo 'source("/etc/R/Rprofile.site")' >> /etc/littler.r
-
-  	ln -s /usr/share/doc/littler/examples/install.r /usr/local/bin/install.r
-  	ln -s /usr/share/doc/littler/examples/install2.r /usr/local/bin/install2.r
-  	ln -s /usr/share/doc/littler/examples/installGithub.r /usr/local/bin/installGithub.r
-  	ln -s /usr/share/doc/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r
-  	install.r docopt
-
     ## TODO: This is a bit heavy and might slow-down the cluster setup process
     ## way too much. Check if we can live with less pre-installed packages.
-    install2.r --deps TRUE \
-        devtools \
-        dplyr \
-        tidyr \
-        stringr \
-        data.table
-    ##R -e 'devtools::install_github("rstudio/sparklyr")'
+    if  [1 -eq 0]; then
+      echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
+      echo 'source("/etc/R/Rprofile.site")' >> /etc/littler.r
+
+    	ln -s /usr/share/doc/littler/examples/install.r /usr/local/bin/install.r
+    	ln -s /usr/share/doc/littler/examples/install2.r /usr/local/bin/install2.r
+    	ln -s /usr/share/doc/littler/examples/installGithub.r /usr/local/bin/installGithub.r
+    	ln -s /usr/share/doc/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r
+    	install.r docopt
+
+      install2.r --deps TRUE \
+          devtools \
+          dplyr \
+          tidyr \
+          stringr \
+          data.table
+      ##R -e 'devtools::install_github("rstudio/sparklyr")'
+  fi
 fi
