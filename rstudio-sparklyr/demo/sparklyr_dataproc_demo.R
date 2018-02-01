@@ -1,8 +1,8 @@
+library(sparklyr)
 library(dplyr)
 library(tidyverse)
 library(lubridate)
 library(ggplot2)
-library(sparklyr)
 
 # Setting environment vars for Spark.
 Sys.setenv(SPARK_HOME="/usr/lib/spark")
@@ -13,7 +13,11 @@ config <- spark_config()
 # Connect to spark on master node
 sc <- spark_connect(master = "yarn-client", spark_home = "/usr/lib/spark")
 
-spark_read_csv(sc, "flights_spark_2008", "gs://christianmerkwirth/rstudo-sparklyr/dataexpo/2009/2008.csv.bz2", memory = FALSE)
+spark_read_csv(sc,
+               "flights_spark_2008",
+               "gs://christianmerkwirth/rstudio-sparklyr/dataexpo/2009/2008.csv.bz2",
+               memory = TRUE,
+               overwrite = TRUE)
 
 flights_table <- tbl(sc,"flights_spark_2008") %>%
   mutate(DepDelay = as.numeric(DepDelay),
@@ -28,12 +32,16 @@ sdf_register(flights_table, "flights_spark")
 
 tbl_cache(sc, "flights_spark")
 
-spark_read_csv(sc, "flights_spark_2007" , "gs://christianmerkwirth/rstudo-sparklyr/dataexpo/2009/2007.csv.bz2", memory = FALSE)
+spark_read_csv(sc,
+               "flights_spark_2007",
+               "gs://christianmerkwirth/rstudio-sparklyr/dataexpo/2009/2007.csv.bz2",
+               memory = TRUE,
+               overwrite = TRUE)
 
 all_flights <- tbl(sc, "flights_spark_2008") %>%
-  union(tbl(sc, "flights_spark_2007")) %>%
-  group_by(Year, Month) %>%
-  tally()
+  dplyr::union(tbl(sc, "flights_spark_2007")) %>%
+  dplyr::group_by(Year, Month) %>%
+  dplyr::tally()
 
 all_flights <- all_flights %>%
   collect()
