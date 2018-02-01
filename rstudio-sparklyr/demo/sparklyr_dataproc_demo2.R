@@ -51,9 +51,9 @@ airports_tbl <- tbl(sc, 'airports')
 
 # Union all flights.
 flights_tbl <-  dplyr::union(
+    tbl(sc, 'flights_spark_2006'),
     tbl(sc, 'flights_spark_2007'),
-    tbl(sc, 'flights_spark_2008'),
-    tbl(sc, 'flights_spark_2009'))
+    tbl(sc, 'flights_spark_2008'))
 
 # Filter records and create target variable 'gain'
 model_data <- flights_tbl %>%
