@@ -32,10 +32,3 @@ print(g)
 
 ggsave(filename = 'gpplot_example.pdf', plot = g)
 
-spark_apply(
-  iris_tbl,
-  function(e) { broom::tidy(lm(Petal_Width ~ Petal_Length, e)) },
-  names = c("term", "estimate", "std.error", "statistic", "p.value"),
-  group_by = "Species"
-)
-
