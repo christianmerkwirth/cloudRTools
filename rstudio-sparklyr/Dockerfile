@@ -2,7 +2,7 @@ FROM rocker/tidyverse:latest
 
 RUN apt update && apt install r-cran-rjava -y \
   && apt-get install libc6-dbg gdb valgrind -y \
-  && install2.r \
+  && install2.r -r 'http://cran.rstudio.com' \
      devtools \
      caret \
      fst \
@@ -13,6 +13,13 @@ RUN apt update && apt install r-cran-rjava -y \
      knitr \
      googleComputeEngineR \
      googleCloudStorageR \
+     googleAuthR \
+     googleAnalyticsR \
+     searchConsoleR \
+     googleCloudStorageR \
+     bigQueryR \
+     htmlwidgets \
+     feather \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/ \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
