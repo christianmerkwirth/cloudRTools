@@ -29,7 +29,7 @@ gcloud container images  describe ${IMAGE}
 ## Though small, we need to copy the dataproc_initialization action script to
 ## a cloud bucket in order to make it available when setting up the dataproc
 ## cluster.
-gsutil cp dataproc_initialization.sh gs://${GCS_BUCKET}/rstudo-sparklyr/
+gsutil cp dataproc_initialization.sh gs://${GCS_BUCKET}/rstudio-sparklyr/
 
 ## Create the dataproc cluster with given specs. Note the init actions and the
 ## metadata provided. This will start Rstudio inside the Rocker image on the
@@ -44,7 +44,7 @@ gcloud beta dataproc \
   --num-workers 2 \
   --worker-machine-type n1-standard-2 \
   --worker-boot-disk-size 500 \
-  --initialization-actions gs://${GCS_BUCKET}/rstudo-sparklyr/dataproc_initialization.sh \
+  --initialization-actions gs://${GCS_BUCKET}/rstudio-sparklyr/dataproc_initialization.sh \
   --scopes "https://www.googleapis.com/auth/cloud-platform" \
   --project river-vigil-178615 \
   --metadata=docker-image=$IMAGE \
