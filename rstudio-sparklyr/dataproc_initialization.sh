@@ -68,4 +68,3 @@ if [[ "${ROLE}" == 'Master' ]]; then
   echo 'Failed to run Cloud Datalab' >&2
   exit 1
 fi
-## TODO: Install base-R with a few packages on the worker nodes to enable spark_apply.
