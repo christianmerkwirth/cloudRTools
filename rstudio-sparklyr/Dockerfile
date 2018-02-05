@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:latest
+FROM rocker/tidyverse:3.3.3
 
 RUN apt update && apt install r-cran-rjava -y \
   && apt-get install libc6-dbg gdb valgrind -y \
