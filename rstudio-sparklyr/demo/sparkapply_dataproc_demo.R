@@ -17,8 +17,10 @@ sc <- spark_connect(master = "yarn-client", spark_home = "/usr/lib/spark")
 # R base commands.
 trees_tbl <- sdf_copy_to(sc, trees, repartition = 2, overwrite = TRUE)
 
-trees_tbl %>%
+res <- trees_tbl %>%
   spark_apply(function(e) scale(e))
+print(res)
+
 
 # In this second example we spark_apply a function that uses commands from
 # the broom package, which will be serialized from the R installation on the
@@ -33,9 +35,10 @@ iris_func <- function(e) {
   broom::tidy(lm(Petal_Width ~ Petal_Length, e))
 }
 
-spark_apply(
+res <- spark_apply(
   iris_tbl,
   iris_func,
   names = c("term", "estimate", "std.error", "statistic", "p.value"),
   group_by = "Species"
 )
+print(res)
