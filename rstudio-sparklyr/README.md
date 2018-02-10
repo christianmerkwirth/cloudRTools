@@ -39,7 +39,7 @@ Before running this script, make sure that:
 ## Quickstart
 
 Note that significant costs may occur depending on the usage. Please remember to delete any GCloud resources not longer in use.
-If you feel confident to proceed, clone this github repo, edit and run the run_gcloud script.
+If you feel confident to proceed, clone this github repo, *edit and run the run_gcloud script*.
 
 ```bash
 cd rstudio-sparklyr
@@ -60,6 +60,15 @@ Within the RStudio session on the Dataproc master node, run:
 source('demo/sparklyr_dataproc_demo.R')
 ```
 
+## What happens under the hood ?
+
+So the `run_gloud.sh` file builds a Dockerfile with RStudio, R 3.4.3 and lots of useful packages. It then
+creates a dataproc cluster and
+
+* installs and runs the RStudio docker on the master node.
+* installs or upgrades R base 3.4.3 on all worker nodes. For spark_apply it is essential that the R versions
+on the master and on the worker nodes agree.
+
 ## Getting data in and about
 
 **DRAFT**
@@ -68,7 +77,6 @@ into and result data out. Google Cloud storage seems the ideal way of persisting
 
 * [googleCloudStorageR](https://github.com/cloudyr/googleCloudStorageR)
 * [googleComputeEngineR](https://github.com/cloudyr/googleComputeEngineR)
-
 
 ## Notes
 
