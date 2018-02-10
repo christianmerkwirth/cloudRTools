@@ -69,55 +69,22 @@ if [[ "${ROLE}" == 'Master' ]]; then
   echo 'Failed to run Cloud Datalab' >&2
   exit 1
 fi
-## Install base-R with a few packages on the worker nodes to enable spark_apply.
-  if [[ "${ROLE}" == 'Worker' ]]; then
-    echo "deb http://http.debian.net/debian sid main" > /etc/apt/sources.list.d/debian-unstable.list
-    #echo 'APT::Default-Release "testing";' > /etc/apt/apt.conf.d/default
-    export R_BASE_VERSION=3.4.3
-  	apt-get update && apt-get install -y --no-install-recommends \
-      ed \
-      less \
-      locales \
-      vim-tiny \
-      wget \
-      ca-certificates \
-      fonts-texgyre \
-      libxml2-dev \
-      libsqlite-dev \
-      libpq-dev \
-      libssh2-1-dev
+## Upgrade base-R with to 3.4.3 on worker nodes to enable spark_apply.
+if [[ "${ROLE}" == 'Worker' ]]; then
+  echo "deb http://http.debian.net/debian sid main" > /etc/apt/sources.list.d/debian-unstable.list
+  export R_BASE_VERSION=3.4.3
 
   echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen en_US.utf8 \
     && /usr/sbin/update-locale LANG=en_US.UTF-8
 
-  ## Now install R and littler, and create a link for littler in /usr/local/bin
-  ## Also set a default CRAN repo, and make sure littler knows about it too.
+  ## Install or upgrade base-R with to 3.4.3
+  export DEBIAN_FRONTEND=noninteractive
   apt-get update \
   	&& apt-get install -t unstable -y --no-install-recommends \
-    littler \
-    r-cran-littler \
-    r-base=${R_BASE_VERSION}* \
-    r-base-dev=${R_BASE_VERSION}* \
-    r-recommended=${R_BASE_VERSION}*
+    r-base=${R_BASE_VERSION}*
+    #r-base-dev=${R_BASE_VERSION}* \
+    #r-recommended=${R_BASE_VERSION}*
 
-    echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site
-    echo 'source("/etc/R/Rprofile.site")' >> /etc/littler.r
-
-  	ln -s /usr/share/doc/littler/examples/install.r /usr/local/bin/install.r
-  	ln -s /usr/share/doc/littler/examples/install2.r /usr/local/bin/install2.r
-  	ln -s /usr/share/doc/littler/examples/installGithub.r /usr/local/bin/installGithub.r
-  	ln -s /usr/share/doc/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r
-    ## TODO: This is a bit heavy and might slow-down the cluster setup process
-    ## way too much. Check if we can live with less pre-installed packages.
-    if  [1 -eq 0]; then
-    	install.r docopt
-      install2.r --deps TRUE \
-          devtools \
-          dplyr \
-          tidyr \
-          stringr \
-          data.table
-      ##R -e 'devtools::install_github("rstudio/sparklyr")'
-  fi
+  echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site
 fi
