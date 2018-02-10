@@ -54,5 +54,3 @@ g <- ggplot(data = all_flights, aes(x = Month, y = n/1000, fill = factor(Year)))
   theme_light() +
   labs(y="Number of Flights (Thousands)", title = "Number of Flights Year-Over-Year")
 print(g)
-
-spark_disconnect(sc)
