@@ -41,11 +41,13 @@ gcloud beta dataproc \
   --zone $ZONE \
   --master-machine-type n1-standard-2 \
   --master-boot-disk-size 500 \
-  --num-workers 2 \
-  --worker-machine-type n1-standard-2 \
-  --worker-boot-disk-size 500 \
+  --num-workers 3 \
+  --worker-machine-type n1-highmem-2 \
+  --master-boot-disk-size 30 \
+  --worker-boot-disk-size 30 \
   --initialization-actions gs://${GCS_BUCKET}/rstudio-sparklyr/dataproc_initialization.sh \
   --scopes "https://www.googleapis.com/auth/cloud-platform" \
+  --scopes cloud-platform \
   --project river-vigil-178615 \
   --metadata=docker-image=$IMAGE \
   --max-idle 7200
