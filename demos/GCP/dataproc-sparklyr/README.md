@@ -1,17 +1,6 @@
-# A Spark-ready RStudio Server Docker Image
+# Running Rstudio server with Sparklyr on a Google Dataproc cluster
 
-This directory contains code and instructions to build a
-[Sparklyr](http://spark.rstudio.com/)-ready RStudio Server Docker image.
-
-## Building and running the Docker image locally
-
-```bash
-cd rstudio-sparklyr
-docker build -t sparklyrocker .
-docker run --rm -d -p 8787:8787 sparklyrocker:latest
-````
-
-## Running an Rstudio-Server with Sparklyr on a Google Dataproc cluster
+## Overview
 
 Google Cloud offers managed Spark clusters named [dataproc clusters](https://cloud.google.com/dataproc/?hl=en).
 
@@ -39,10 +28,9 @@ Before running this script, make sure that:
 ## Quickstart
 
 Note that significant costs may occur depending on the usage. Please remember to delete any GCloud resources not longer in use.
-If you feel confident to proceed, clone this github repo, edit and run the run_gcloud script.
+If you feel confident to proceed, clone this github repo, *edit and run the run_gcloud script*.
 
 ```bash
-cd rstudio-sparklyr
 source run_gcloud.sh
 ```
 
@@ -60,6 +48,15 @@ Within the RStudio session on the Dataproc master node, run:
 source('demo/sparklyr_dataproc_demo.R')
 ```
 
+## What happens under the hood ?
+
+So the `run_gloud.sh` file builds a Dockerfile with RStudio, R 3.4.3 and lots of useful packages. It then
+creates a dataproc cluster and
+
+* installs and runs the RStudio docker on the master node.
+* installs or upgrades R base 3.4.3 on all worker nodes. For spark_apply it is essential that the R versions
+on the master and on the worker nodes agree.
+
 ## Getting data in and about
 
 **DRAFT**
@@ -68,7 +65,6 @@ into and result data out. Google Cloud storage seems the ideal way of persisting
 
 * [googleCloudStorageR](https://github.com/cloudyr/googleCloudStorageR)
 * [googleComputeEngineR](https://github.com/cloudyr/googleComputeEngineR)
-
 
 ## Notes
 
@@ -79,4 +75,4 @@ into and result data out. Google Cloud storage seems the ideal way of persisting
 
 ## See also
 
-[Jasper Ginn describes an alternative approach for running running Sparklyr on a Dataproc](https://www.jasperginn.nl/using-rstudio-and-sparklyr-with-a-google-dataproc-cluster/).
+[Jasper Ginn describes an alternative approach for running running Sparklyr on a Dataproc cluster](https://www.jasperginn.nl/using-rstudio-and-sparklyr-with-a-google-dataproc-cluster/).
