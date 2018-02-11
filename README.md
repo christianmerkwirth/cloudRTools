@@ -41,7 +41,7 @@ Though even the *easy* problems can be difficult when it comes to the orchestrat
 * Flow processing frameworks  (e.g. Map-Reduce, Flume)
 * Query processing frameworks (e.g. BigQuery)
 
-Flow processing frameworks allow the user to describe a sequence of processing steps that will be executed on a distributed data set. While the framework might compile an optimized execution plan, using these framework is still
+Flow processing frameworks allow the user to describe a sequence of processing steps that will be executed on a distributed data set. While the framework might compile an optimised execution plan, using these framework is still
 closer to a traditional programming paradigm.
 
 Query processing frameworks execute SQL-like queries against a specially formatted data set. While those frameworks limit
@@ -49,7 +49,7 @@ the scope of algorithms that can be applied on that data, their advantage is tha
 to handle extremely large data sets.
 
 Often the solution to a given problem can involve the combination of different approaches, e.g. filtering and aggregating
-the intial, extremely huge data set by means of a query processing framework and then executing a more complex
+the initial, extremely huge data set by means of a query processing framework and then executing a more complex
 machine learning algorithm on the already reduced data set.
 
 ## Docker images
@@ -68,7 +68,7 @@ Use the Dockefile to build a [Rocker-based](https://github.com/rocker-org/rocker
 image that contains an RStudio Server with Spark&Sparklyr preinstalled.
 
 ```
-cd rstudio-sparklyr
+cd dockerfiles/rstudio-sparklyr
 docker build -t sparklyrocker .
 docker run --rm -d -p 8787:8787 sparklyrocker:latest
 ````

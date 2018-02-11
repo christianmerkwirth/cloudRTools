@@ -1,17 +1,6 @@
-# A Spark-ready RStudio Server Docker Image
+# Running an Rstudio-Server with Sparklyr on a Google Dataproc cluster
 
-This directory contains code and instructions to build a
-[Sparklyr](http://spark.rstudio.com/)-ready RStudio Server Docker image.
-
-## Building and running the Docker image locally
-
-```bash
-cd rstudio-sparklyr
-docker build -t sparklyrocker .
-docker run --rm -d -p 8787:8787 sparklyrocker:latest
-````
-
-## Running an Rstudio-Server with Sparklyr on a Google Dataproc cluster
+## Overview
 
 Google Cloud offers managed Spark clusters named [dataproc clusters](https://cloud.google.com/dataproc/?hl=en).
 
@@ -42,7 +31,6 @@ Note that significant costs may occur depending on the usage. Please remember to
 If you feel confident to proceed, clone this github repo, *edit and run the run_gcloud script*.
 
 ```bash
-cd rstudio-sparklyr
 source run_gcloud.sh
 ```
 
