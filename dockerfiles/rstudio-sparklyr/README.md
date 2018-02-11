@@ -5,8 +5,8 @@ This directory contains code and instructions to build a
 
 ## Building and running the Docker image locally
 
+From the root directory of this repo:
 ```bash
-docker build -t sparklyrocker .
+docker build -t sparklyrocker -f dockerfiles/rstudio-sparklyr/Dockerfile  .
 docker run --rm -d -p 8787:8787 sparklyrocker:latest
 ````
-
