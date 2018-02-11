@@ -19,7 +19,7 @@ gcloud components update
 
 ## The Docker image is already hosted on gcr. GCloud claims that first 120 min
 ##of build time each day are free.
-IMAGE=gcr.io/github-christianmerkwirth-cloudrtools:latest
+IMAGE=gcr.io/river-vigil-178615/github-christianmerkwirth-cloudrtools:latest
 
 ## Make sure we see a description of the freshly created image here.
 gcloud container images  describe ${IMAGE}

@@ -5,6 +5,11 @@ library(ggplot2)
 library(sparklyr)
 library(sparkgeo)
 library(sparkbq)
+# Add clusterml to get us a wrapper for gcloud and gsutil.
+library(clusterml)
+
+# Make sure that cloudml finds gcloud and gsutil binaries.
+system('ln -s /usr/lib/google-cloud-sdk/ ~/')
 
 # Setting environment vars for Spark.
 Sys.setenv(SPARK_HOME="/usr/lib/spark")
@@ -13,7 +18,7 @@ Sys.setenv(JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre/")
 # Spark configuration settings
 config <- spark_config()
 
-config$spark.executor.instances <- 2
+config$spark.executor.instances <- 3
 config$park.executor.cores <- 2
 config$spark.executor.memory <- "8g"
 config$spark.sql.shuffle.partitions <- 400
@@ -49,10 +54,6 @@ hamlet <-
   filter(corpus == "hamlet") %>% # NOTE: predicate pushdown to BigQuery!
   collect()
 
-
-
-
-
 neighborhoods <-
   spark_read_geojson(
     sc = sc,
@@ -64,7 +65,7 @@ neighborhoods <-
   sdf_persist()
 
 all_trips_spark_by_year <-
-  lapply(2009:2009, function(year) {
+  lapply(2009:2012, function(year) {
     spark_read_bigquery(
       sc = sc,
       name = paste0("trips", year),
@@ -133,14 +134,11 @@ credit_trips_spark <-
   # Persist results to memory and/or disk
   sdf_persist()
 
-
 avg_tip_per_neighborhood_spark <-
 credit_trips_spark %>%
 group_by(neighborhood) %>%
 summarize(avg_tip_pct = mean(tip_pct)) %>%
 arrange(desc(avg_tip_pct))
-
-
 
 avg_tip_per_neighborhood <- avg_tip_per_neighborhood_spark %>% collect()
 

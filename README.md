@@ -68,8 +68,7 @@ Use the Dockefile to build a [Rocker-based](https://github.com/rocker-org/rocker
 image that contains an RStudio Server with Spark&Sparklyr preinstalled.
 
 ```
-cd dockerfiles/rstudio-sparklyr
-docker build -t sparklyrocker .
+docker build -t sparklyrocker -f dockerfiles/rstudio-sparklyr/Dockerfile  .
 docker run --rm -d -p 8787:8787 sparklyrocker:latest
 ````
 
