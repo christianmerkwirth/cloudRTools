@@ -1,4 +1,4 @@
-# Running an Rstudio-Server with Sparklyr on a Google Dataproc cluster
+# Running Rstudio server with Sparklyr on a Google Dataproc cluster
 
 ## Overview
 
@@ -75,4 +75,4 @@ into and result data out. Google Cloud storage seems the ideal way of persisting
 
 ## See also
 
-[Jasper Ginn describes an alternative approach for running running Sparklyr on a Dataproc](https://www.jasperginn.nl/using-rstudio-and-sparklyr-with-a-google-dataproc-cluster/).
+[Jasper Ginn describes an alternative approach for running running Sparklyr on a Dataproc cluster](https://www.jasperginn.nl/using-rstudio-and-sparklyr-with-a-google-dataproc-cluster/).
