@@ -43,6 +43,7 @@ if [[ "${ROLE}" == 'Master' ]]; then
   VOLUMES=$(echo /etc/{hadoop*,hive*,*spark*}  \
            /etc/alternatives/{hadoop*,hive*,*spark*} \
            /hadoop \
+           /usr/lib/google-cloud-sdk \
            /usr/lib/spark \
            /usr/lib/hadoop/ \
            /usr/lib/hadoop-hdfs \
