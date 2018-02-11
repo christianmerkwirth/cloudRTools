@@ -8,7 +8,6 @@
 
 ## Adapt PROJECT_ID, REGION, ZONE AND GCS_BUCKET with your data.
 PROJECT_ID="river-vigil-178615"
-ROCKER_IMAGE="sparklyr_rocker"
 CLUSTER_NAME="sparklyr-cluster"
 REGION="global"
 ZONE="europe-west3-c"
@@ -18,10 +17,9 @@ GCS_BUCKET="christianmerkwirth"
 ## Gcloud CLI.
 gcloud components update
 
-## Build the Rocker image. GCloud claims that first 120 min of build time of a
-# day are free.
-IMAGE=gcr.io/${PROJECT_ID}/${ROCKER_IMAGE}:latest
-gcloud container builds submit --tag gcr.io/${PROJECT_ID}/${ROCKER_IMAGE} --timeout=1h .
+## The Docker image is already hosted on gcr. GCloud claims that first 120 min
+##of build time each day are free.
+IMAGE=gcr.io/github-christianmerkwirth-cloudrtools:latest
 
 ## Make sure we see a description of the freshly created image here.
 gcloud container images  describe ${IMAGE}
@@ -35,10 +33,10 @@ gsutil cp dataproc_initialization.sh gs://${GCS_BUCKET}/rstudio-sparklyr/
 ## metadata provided. This will start Rstudio inside the Rocker image on the
 # Dataproc master.
 gcloud beta dataproc \
-  --region $REGION \
+  --region ${REGION} \
   clusters create sparklyr-cluster \
   --subnet default \
-  --zone $ZONE \
+  --zone ${ZONE} \
   --master-machine-type n1-standard-2 \
   --master-boot-disk-size 500 \
   --num-workers 3 \
@@ -48,6 +46,6 @@ gcloud beta dataproc \
   --initialization-actions gs://${GCS_BUCKET}/rstudio-sparklyr/dataproc_initialization.sh \
   --scopes "https://www.googleapis.com/auth/cloud-platform" \
   --scopes cloud-platform \
-  --project river-vigil-178615 \
-  --metadata=docker-image=$IMAGE \
+  --project ${PROJECT_ID} \
+  --metadata=docker-image=${IMAGE} \
   --max-idle 7200
