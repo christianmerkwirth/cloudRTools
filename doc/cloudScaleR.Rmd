@@ -1,7 +1,7 @@
 ---
 title: "Cloud-scale R"
 author: "Christian Merkwirth"
-date: "2018-02-08"
+date: "2018-02-11"
 output:
   ioslides_presentation: default
   slidy_presentation: default
@@ -62,32 +62,6 @@ knitr::opts_chunk$set(echo = FALSE)
     - [Amazon AWS](https://aws.amazon.com/)
     - [Microsoft Azure](https://azure.microsoft.com/)
 
-## Getting code into the cloud
-
-* Docker images used to spawn nodes 
-    – Default: rocker/tidyverse:latest
-    – Lots of R packages pre-installed 
-* But this cross-validation also needs: 
-    – xgboost, e1071
-* Easy fix: build your own docker image
-    - write a Dockerfile that builds on an already existing Rocker image
-    - add packages and applications
-* Build Docker images in the cloud
-    - 120 min free build time daily in GCP
-
-
-## Getting data into the cloud
-
-* Speed hierarchy
-    - Superfast: In cloud, same region & zone
-    - Fast: In cloud, different region or zone
-    - Okay: Between different cloud platforms
-    - Slow: Between cloud and your local machine
-* Collect and keep the data in the cloud
-    - Manage data downloads from within a VM instance
-    - Check whether to keep data on persistent data storage
-
-
 ## Easy to parallelize 
 
 * A problem is easy to speedup when: 
@@ -145,15 +119,33 @@ knitr::opts_chunk$set(echo = FALSE)
      – It’s only at this point you have to worry about data size
 * Use ordinary dplyr syntax to interact with data in Spark cluster
 
+## Getting code into the cloud
 
-## Machine Learning with SparklyR 
+* [Github](github.comn) or
+  [Google Source](https://cloud.google.com/source-repositories/)
+  repos keep versioned code persistently
+* Docker images used to spawn nodes 
+    – Default: rocker/tidyverse:latest
+    – Lots of R packages pre-installed 
+* But this cross-validation also needs: 
+    – xgboost, e1071
+* Easy fix: build your own docker image
+    - write a Dockerfile that builds on an already existing Rocker image
+    - add packages and applications
+* Build Docker images in the cloud
+    - 120 min free build time daily in GCP
 
-```{R}
- TODO <- 2
-```
+## Getting data into the cloud
 
-* SparklyR provides R interfaces to Spark’s distributed machine learning algorithms (MLlib)
-* Computations happing in the Spark cluster, not in R
+* Speed hierarchy
+    - Superfast: In cloud, same region & zone
+    - Fast: In cloud, different region or zone
+    - Okay: Between different cloud platforms
+    - Slow: Between cloud and your local machine
+* Collect and keep the data in the cloud
+    - Manage data downloads from within a VM instance
+    - Check whether to keep data on persistent data storage
+
 
 ## Packages to make R cloud-ready
 
@@ -167,18 +159,17 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Google Cloud Platform
 
+## Dataproc
 
-## Packages
+* Managed Spark cluster of user-specified size
+* All installations done automatically
+* Setup and turndown within minutes
+* Pay for machines (master + workers) plus some cluster fee
+* Attach SSDs on demand
+* Connectors to Bigquery and Datastore for fast data import
+* R preinstalled on master and worker nodes
+* Works smoothly with sparklyr
 
-* Management of VMs
-    - googleComputeEngineR
-    - googleAuthR
-* Managed frameworks
-    - Dataproc 
-    - Big Query
-    - Big Table
-    - Data flow
-    - Cloud ML
 
 ## Big Query
 
@@ -190,6 +181,7 @@ knitr::opts_chunk$set(echo = FALSE)
 * Pay for data volume processed
 * Ideal solution for preprocessing and condensing
 
+
 ## Data Flow
 
 * GCP Dataflow (aka Flume)
@@ -200,23 +192,71 @@ knitr::opts_chunk$set(echo = FALSE)
 * https://medium.com/google-cloud/cloud-dataflow-can-autoscale-r-programs-for-massively-parallel-data-processing-492b57bd732d
 
 
-## Analyzing NYC Taxi Data Set
+## GCP specific packages
 
-## Sparklyr
+* Management of VMs
+    - googleComputeEngineR:
+    - googleAuthR: 
+* Managed frameworks
+    - Spark: [sparklyr]()
+    - Big Query I: [bigRQuery]()
+    - Big Query II: [bigQueryR](https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html)
+    - Big Table: 
+    - Cloud ML: [cloudml]
 
 
-## Sparklyr + Bigquery
+## Starting and Managing GCE instances
 
+## Managing data on Google Datascore
+
+## Sparklyr & Dataproc
+
+## Machine Learning with SparklyR 
+
+```{R}
+example <- 2
+```
+
+* SparklyR provides R interfaces to Spark’s distributed machine learning
+  algorithms (MLlib)
+* Computations happing in the Spark cluster, not in R
+
+
+## Analyzing NYC Taxi Data Set with Sparklyr and BigQuery
 
 
 https://www.r-bloggers.com/new-york-city-taxi-limousine-commission-tlc-trip-data-analysis-using-sparklyr-and-google-bigquery/
 
 
+## BigRQuery
+
+https://cloud.google.com/blog/big-data/2017/04/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery
+
+
+## BigQueryR
+
+https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html
+
 ## Cloud ML
 
 https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html
 
-## Costs
+
+## Best practices - Data
+
+* Keep data close
+    - Speed cascade (same rack, same interlink, same datacenter, same zone, same region,
+      out of cloud)
+* If possible, keep data in the cloud
+    - Costs vs speed of accesss
+    - Remember to store on persistent storage
+* Manage data from within the cloud
+    - Use a GCE instance in the cloud as your console to move data
+* Retrieve only reasonable small datasets out of the cloud
+    - Condensed, manageable sized results
+    - Generate visualizations and reports in cloud
+
+## Best practices - Costs
 
 * On most platforms, you pay
     - Compute resources by minute
@@ -225,13 +265,12 @@ https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html
     - Queries by processed data volume
 * Make sure
     - To check pricing, promos and free tier
-    - To develop your approach on a smaller (but not too small) subset
+    - To develop your approach on a smaller (but not too small) subset of data
     - Allocate only those resourced needed
     - Take down VMs, clusters after processing
     - Check for not longer needed storage
     - Set proper quotas
     - Preemptive or spot resources can be much cheaper
 
-## Summary
-
+## Questions
 

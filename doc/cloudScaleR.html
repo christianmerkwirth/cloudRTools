@@ -10,7 +10,7 @@
 
 
 
-  <meta name="date" content="2018-02-08" />
+  <meta name="date" content="2018-02-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -94,7 +94,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">2018-02-08</p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018-02-11</p>
           </hgroup>
   </slide>
 
@@ -170,43 +170,6 @@
 </ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Getting code into the cloud</h2></hgroup><article  id="getting-code-into-the-cloud">
-
-<ul>
-<li>Docker images used to spawn nodes – Default: rocker/tidyverse:latest – Lots of R packages pre-installed</li>
-<li>But this cross-validation also needs: – xgboost, e1071</li>
-<li>Easy fix: build your own docker image
-
-<ul>
-<li>write a Dockerfile that builds on an already existing Rocker image</li>
-<li>add packages and applications</li>
-</ul></li>
-<li>Build Docker images in the cloud
-
-<ul>
-<li>120 min free build time daily in GCP</li>
-</ul></li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Getting data into the cloud</h2></hgroup><article  id="getting-data-into-the-cloud">
-
-<ul>
-<li>Speed hierarchy
-
-<ul>
-<li>Superfast: In cloud, same region &amp; zone</li>
-<li>Fast: In cloud, different region or zone</li>
-<li>Okay: Between different cloud platforms</li>
-<li>Slow: Between cloud and your local machine</li>
-</ul></li>
-<li>Collect and keep the data in the cloud
-
-<ul>
-<li>Manage data downloads from within a VM instance</li>
-<li>Check whether to keep data on persistent data storage</li>
-</ul></li>
-</ul>
-
 </article></slide><slide class=""><hgroup><h2>Easy to parallelize</h2></hgroup><article  id="easy-to-parallelize">
 
 <ul>
@@ -278,11 +241,42 @@
 <li>Use ordinary dplyr syntax to interact with data in Spark cluster</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Machine Learning with SparklyR</h2></hgroup><article  id="machine-learning-with-sparklyr">
+</article></slide><slide class=""><hgroup><h2>Getting code into the cloud</h2></hgroup><article  id="getting-code-into-the-cloud">
 
 <ul>
-<li>SparklyR provides R interfaces to Spark’s distributed machine learning algorithms (MLlib)</li>
-<li>Computations happing in the Spark cluster, not in R</li>
+<li><a href='github.comn' title=''>Github</a> or <a href='https://cloud.google.com/source-repositories/' title=''>Google Source</a> repos keep versioned code persistently</li>
+<li>Docker images used to spawn nodes – Default: rocker/tidyverse:latest – Lots of R packages pre-installed</li>
+<li>But this cross-validation also needs: – xgboost, e1071</li>
+<li>Easy fix: build your own docker image
+
+<ul>
+<li>write a Dockerfile that builds on an already existing Rocker image</li>
+<li>add packages and applications</li>
+</ul></li>
+<li>Build Docker images in the cloud
+
+<ul>
+<li>120 min free build time daily in GCP</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Getting data into the cloud</h2></hgroup><article  id="getting-data-into-the-cloud">
+
+<ul>
+<li>Speed hierarchy
+
+<ul>
+<li>Superfast: In cloud, same region &amp; zone</li>
+<li>Fast: In cloud, different region or zone</li>
+<li>Okay: Between different cloud platforms</li>
+<li>Slow: Between cloud and your local machine</li>
+</ul></li>
+<li>Collect and keep the data in the cloud
+
+<ul>
+<li>Manage data downloads from within a VM instance</li>
+<li>Check whether to keep data on persistent data storage</li>
+</ul></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Packages to make R cloud-ready</h2></hgroup><article  id="packages-to-make-r-cloud-ready">
@@ -305,24 +299,17 @@
 
 </article></slide><slide class=""><hgroup><h2>Google Cloud Platform</h2></hgroup><article  id="google-cloud-platform">
 
-</article></slide><slide class=""><hgroup><h2>Packages</h2></hgroup><article  id="packages">
+</article></slide><slide class=""><hgroup><h2>Dataproc</h2></hgroup><article  id="dataproc">
 
 <ul>
-<li>Management of VMs
-
-<ul>
-<li>googleComputeEngineR</li>
-<li>googleAuthR</li>
-</ul></li>
-<li>Managed frameworks
-
-<ul>
-<li>Dataproc</li>
-<li>Big Query</li>
-<li>Big Table</li>
-<li>Data flow</li>
-<li>Cloud ML</li>
-</ul></li>
+<li>Managed Spark cluster of user-specified size</li>
+<li>All installations done automatically</li>
+<li>Setup and turndown within minutes</li>
+<li>Pay for machines (master + workers) plus some cluster fee</li>
+<li>Attach SSDs on demand</li>
+<li>Connectors to Bigquery and Datastore for fast data import</li>
+<li>R preinstalled on master and worker nodes</li>
+<li>Works smoothly with sparklyr</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Big Query</h2></hgroup><article  id="big-query">
@@ -351,19 +338,83 @@
 <li><a href='https://medium.com/google-cloud/cloud-dataflow-can-autoscale-r-programs-for-massively-parallel-data-processing-492b57bd732d' title=''>https://medium.com/google-cloud/cloud-dataflow-can-autoscale-r-programs-for-massively-parallel-data-processing-492b57bd732d</a></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Analyzing NYC Taxi Data Set</h2></hgroup><article  id="analyzing-nyc-taxi-data-set">
+</article></slide><slide class=""><hgroup><h2>GCP specific packages</h2></hgroup><article  id="gcp-specific-packages">
 
-</article></slide><slide class=""><hgroup><h2>Sparklyr</h2></hgroup><article  id="sparklyr">
+<ul>
+<li>Management of VMs
 
-</article></slide><slide class=""><hgroup><h2>Sparklyr + Bigquery</h2></hgroup><article  id="sparklyr-bigquery">
+<ul>
+<li>googleComputeEngineR:</li>
+<li>googleAuthR:</li>
+</ul></li>
+<li>Managed frameworks
+
+<ul>
+<li>Spark: <a href='' title=''>sparklyr</a></li>
+<li>Big Query I: <a href='' title=''>bigRQuery</a></li>
+<li>Big Query II: <a href='https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html' title=''>bigQueryR</a></li>
+<li>Big Table:</li>
+<li>Cloud ML: [cloudml]</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Starting and Managing GCE instances</h2></hgroup><article  id="starting-and-managing-gce-instances">
+
+</article></slide><slide class=""><hgroup><h2>Managing data on Google Datascore</h2></hgroup><article  id="managing-data-on-google-datascore">
+
+</article></slide><slide class=""><hgroup><h2>Sparklyr &amp; Dataproc</h2></hgroup><article  id="sparklyr-dataproc">
+
+</article></slide><slide class=""><hgroup><h2>Machine Learning with SparklyR</h2></hgroup><article  id="machine-learning-with-sparklyr">
+
+<ul>
+<li>SparklyR provides R interfaces to Spark’s distributed machine learning algorithms (MLlib)</li>
+<li>Computations happing in the Spark cluster, not in R</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Analyzing NYC Taxi Data Set with Sparklyr and BigQuery</h2></hgroup><article  id="analyzing-nyc-taxi-data-set-with-sparklyr-and-bigquery">
 
 <p><a href='https://www.r-bloggers.com/new-york-city-taxi-limousine-commission-tlc-trip-data-analysis-using-sparklyr-and-google-bigquery/' title=''>https://www.r-bloggers.com/new-york-city-taxi-limousine-commission-tlc-trip-data-analysis-using-sparklyr-and-google-bigquery/</a></p>
+
+</article></slide><slide class=""><hgroup><h2>BigRQuery</h2></hgroup><article  id="bigrquery">
+
+<p><a href='https://cloud.google.com/blog/big-data/2017/04/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery' title=''>https://cloud.google.com/blog/big-data/2017/04/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery</a></p>
+
+</article></slide><slide class=""><hgroup><h2>BigQueryR</h2></hgroup><article  id="bigqueryr">
+
+<p><a href='https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html' title=''>https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html</a></p>
 
 </article></slide><slide class=""><hgroup><h2>Cloud ML</h2></hgroup><article  id="cloud-ml">
 
 <p><a href='https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html' title=''>https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html</a></p>
 
-</article></slide><slide class=""><hgroup><h2>Costs</h2></hgroup><article  id="costs">
+</article></slide><slide class=""><hgroup><h2>Best practices - Data</h2></hgroup><article  id="best-practices---data">
+
+<ul>
+<li>Keep data close
+
+<ul>
+<li>Speed cascade (same rack, same interlink, same datacenter, same zone, same region, out of cloud)</li>
+</ul></li>
+<li>If possible, keep data in the cloud
+
+<ul>
+<li>Costs vs speed of accesss</li>
+<li>Remember to store on persistent storage</li>
+</ul></li>
+<li>Manage data from within the cloud
+
+<ul>
+<li>Use a GCE instance in the cloud as your console to move data</li>
+</ul></li>
+<li>Retrieve only reasonable small datasets out of the cloud
+
+<ul>
+<li>Condensed, manageable sized results</li>
+<li>Generate visualizations and reports in cloud</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Best practices - Costs</h2></hgroup><article  id="best-practices---costs">
 
 <ul>
 <li>On most platforms, you pay
@@ -381,7 +432,7 @@
 
 <ul>
 <li>To check pricing, promos and free tier</li>
-<li>To develop your approach on a smaller (but not too small) subset</li>
+<li>To develop your approach on a smaller (but not too small) subset of data</li>
 <li>Allocate only those resourced needed</li>
 <li>Take down VMs, clusters after processing</li>
 <li>Check for not longer needed storage</li>
@@ -390,7 +441,7 @@
 </ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Summary</h2></hgroup><article  id="summary"></article></slide>
+</article></slide><slide class=""><hgroup><h2>Questions</h2></hgroup><article  id="questions"></article></slide>
 
 
   <slide class="backdrop"></slide>
