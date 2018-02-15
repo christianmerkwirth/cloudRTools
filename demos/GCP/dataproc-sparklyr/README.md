@@ -31,7 +31,7 @@ Note that significant costs may occur depending on the usage. Please remember to
 If you feel confident to proceed, clone this github repo, *edit and run the run_gcloud script*.
 
 ```bash
-source run_gcloud.sh
+source start_dataproc_cluster.sh
 ```
 
 Once the Dataproc cluster is created, RStudio should run on the master node, listening to port `8787`. There are several
@@ -45,7 +45,7 @@ RStudio should have be all necessary packages onboard to connect to the Spark cl
 
 Within the RStudio session on the Dataproc master node, run:
 ```R
-source('demo/sparklyr_dataproc_demo.R')
+source('examples/GCP/dataproc-sparklyr/demos/sparklyr_dataproc_demo.R')
 ```
 
 ## What happens under the hood ?

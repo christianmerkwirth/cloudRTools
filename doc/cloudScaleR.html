@@ -102,11 +102,17 @@
 
 <ul>
 <li>Widely used data science software</li>
-<li>Used by millions of data scientists, statisticians and analysts</li>
+<li>Used by millions of data scientists, statisticians and analysts
+
+<ul>
 <li>Most powerful statistical programming language</li>
 <li>Flexible, extensible and comprehensive for productivity</li>
-<li>Creates beautiful and unique data visualizations</li>
+</ul></li>
+<li>Creates beautiful and unique data visualizations
+
+<ul>
 <li>As seen in New York Times or The Economist</li>
+</ul></li>
 <li>Thriving open-source community</li>
 <li>Leading edge of Statistics research</li>
 </ul>
@@ -121,15 +127,24 @@
 <li>Examples:
 
 <ul>
-<li>[blog.revolutionanalytics.com/applications/]</li>
+<li>blog.revolutionanalytics.com/applications/</li>
 </ul></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Secrets to using R in production</h2></hgroup><article  id="secrets-to-using-r-in-production">
 
 <ul>
-<li>Don’t use R alone. – Know what it’s good for! (And what it’s not good for.) – Use R as part of a production stack</li>
-<li>Use modern R workflows – Be able to hire great data scientists</li>
+<li>Don’t use R alone.
+
+<ul>
+<li>Know what it’s good for! (And what it’s not good for.)</li>
+<li>Use R as part of a production stack</li>
+</ul></li>
+<li>Use modern R workflows
+
+<ul>
+<li>Be able to hire great data scientists</li>
+</ul></li>
 <li>Use R in conjunction with parallel/distributed data &amp; compute architectures*</li>
 </ul>
 
@@ -140,7 +155,7 @@
 
 <ul>
 <li>Vectorize</li>
-<li>Use <em>data.table</em></li>
+<li>Use <code>library(&quot;data.table&quot;)</code></li>
 </ul></li>
 <li>Move to the cloud and parallelize
 
@@ -211,7 +226,7 @@
 <li>In-memory engine 100x faster than map-reduce</li>
 <li>Highly extensible, with machine-learning capabilities</li>
 <li>Supports Scala, Java, Python, R &#8230;</li>
-<li><em>Managed</em> cloud services available – GCP Dataproc
+<li><em>Managed</em> cloud services available: – GCP Dataproc
 
 <ul>
 <li>Azure Databricks</li>
@@ -225,19 +240,50 @@
 <li>sparklyr:
 
 <ul>
-<li>R interface to Spark – open-source R package from RStudio</li>
+<li>R interface to Spark</li>
+<li>open-source R package from RStudio</li>
 </ul></li>
 <li>Move data between R and Spark</li>
-<li>Keeps <em>References</em> to Spark Data Frames – Familiar R operations, including dplyr syntax – Computations offloaded to Spark cluster, and deferred until needed</li>
+<li>Keeps <em>References</em> to Spark data frames
+
+<ul>
+<li>Familiar R operations, including dplyr syntax</li>
+<li>Computations offloaded to Spark cluster, and deferred until needed</li>
+</ul></li>
 <li>CPU/RAM/Disk consumed in cluster, not by R</li>
-<li>Interfaces to Spark ML algorithms</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Sparklyr ctnd</h2></hgroup><article  id="sparklyr-ctnd">
+
+<ul>
+<li>SparklyR provides R interfaces to Spark’s distributed machine learning algorithms (MLlib)</li>
+<li>Tons of algos:
+
+<ul>
+<li>Classification: logistic regression, naive Bayes,&#8230;</li>
+<li>Regression: generalized linear regression, survival regression,&#8230;</li>
+<li>Decision trees, random forests, and gradient-boosted trees</li>
+<li>Recommendation: alternating least squares (ALS)</li>
+<li>Clustering: K-means, Gaussian mixtures (GMMs),&#8230;</li>
+<li>Topic modeling: latent Dirichlet allocation (LDA)</li>
+</ul></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Things to note</h2></hgroup><article  id="things-to-note">
 
 <ul>
-<li>All of the computation take place in the Spark cluster – Computations are delayed until you need results – Behind the scenes, Spark SQL statements are being written for you</li>
-<li>None of the data comes back to R – Until you call collect, when it becomes a tibble – It’s only at this point you have to worry about data size</li>
+<li>All of the computation take place in the Spark cluster
+
+<ul>
+<li>Computations are delayed until you need results</li>
+<li>Behind the scenes, Spark SQL statements are being written for you</li>
+</ul></li>
+<li>None of the data comes back to R
+
+<ul>
+<li>Until you call collect, when it becomes a tibble</li>
+<li>It’s only at this point you have to worry about data size</li>
+</ul></li>
 <li>Use ordinary dplyr syntax to interact with data in Spark cluster</li>
 </ul>
 
@@ -245,8 +291,17 @@
 
 <ul>
 <li><a href='github.comn' title=''>Github</a> or <a href='https://cloud.google.com/source-repositories/' title=''>Google Source</a> repos keep versioned code persistently</li>
-<li>Docker images used to spawn nodes – Default: rocker/tidyverse:latest – Lots of R packages pre-installed</li>
-<li>But this cross-validation also needs: – xgboost, e1071</li>
+<li>Docker images used to spawn nodes
+
+<ul>
+<li>Default: rocker/tidyverse:latest</li>
+<li>Lots of R packages pre-installed</li>
+</ul></li>
+<li>But this cross-validation also needs:
+
+<ul>
+<li>xgboost, e1071</li>
+</ul></li>
 <li>Easy fix: build your own docker image
 
 <ul>
@@ -260,7 +315,7 @@
 </ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Getting data into the cloud</h2></hgroup><article  id="getting-data-into-the-cloud">
+</article></slide><slide class=""><hgroup><h2>Moving data around</h2></hgroup><article  id="moving-data-around">
 
 <ul>
 <li>Speed hierarchy
@@ -285,7 +340,7 @@
 <li>General
 
 <ul>
-<li>Tidyverse</li>
+<li>tidyverse</li>
 <li>sparklyr</li>
 <li>foreach, future</li>
 </ul></li>
@@ -335,26 +390,29 @@
 <li>Run FlumeJava with embedded Java-based R interpreter Renyin</li>
 </ul></li>
 <li>Might give highest computational throughput at given cost level</li>
-<li><a href='https://medium.com/google-cloud/cloud-dataflow-can-autoscale-r-programs-for-massively-parallel-data-processing-492b57bd732d' title=''>https://medium.com/google-cloud/cloud-dataflow-can-autoscale-r-programs-for-massively-parallel-data-processing-492b57bd732d</a></li>
+<li>More info <a href='https://medium.com/google-cloud/cloud-dataflow-can-autoscale-r-programs-for-massively-parallel-data-processing-492b57bd732d' title=''>here</a></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>GCP specific packages</h2></hgroup><article  id="gcp-specific-packages">
 
 <ul>
-<li>Management of VMs
+<li>Compute Engine:
 
 <ul>
-<li>googleComputeEngineR:</li>
-<li>googleAuthR:</li>
+<li>[googleComputeEngineR]</li>
+</ul></li>
+<li>Storage
+
+<ul>
+<li>[googleCloudStorageR]</li>
 </ul></li>
 <li>Managed frameworks
 
 <ul>
 <li>Spark: <a href='' title=''>sparklyr</a></li>
-<li>Big Query I: <a href='' title=''>bigRQuery</a></li>
+<li>Big Query I: <a href='' title=''>bigrquery</a></li>
 <li>Big Query II: <a href='https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html' title=''>bigQueryR</a></li>
-<li>Big Table:</li>
-<li>Cloud ML: [cloudml]</li>
+<li>Cloud ML: <a href='#cloudml' title=''>cloudml</a></li>
 </ul></li>
 </ul>
 
@@ -364,28 +422,94 @@
 
 </article></slide><slide class=""><hgroup><h2>Sparklyr &amp; Dataproc</h2></hgroup><article  id="sparklyr-dataproc">
 
+<pre class = 'prettyprint lang-bash'>cd demos/GCP/dataproc-sparklyr/
+source start_dataproc_cluster.sh</pre>
+
+<p>Once the Dataproc cluster is created, RStudio should run on the master node, listening to port <code>8787</code>.In RStudio, we execute:</p>
+
+<pre class = 'prettyprint lang-r'>library(sparklyr)
+# Setting environment vars for Spark.
+Sys.setenv(SPARK_HOME=&quot;/usr/lib/spark&quot;)
+Sys.setenv(JAVA_HOME=&quot;/usr/lib/jvm/java-8-openjdk-amd64/jre/&quot;)
+
+config &lt;- spark_config()
+
+# Connect to spark on master node
+sc &lt;- spark_connect(master = &quot;yarn-client&quot;, spark_home = &quot;/usr/lib/spark&quot;)
+
+source(&#39;demos/GCP/dataproc-sparklyr/examples/sparklyr_dataproc_demo.R&#39;)</pre>
+
+<p>For more info check <a href='demos/GCP/dataproc-sparklyr/README.md' title=''>here</a></p>
+
 </article></slide><slide class=""><hgroup><h2>Machine Learning with SparklyR</h2></hgroup><article  id="machine-learning-with-sparklyr">
 
-<ul>
-<li>SparklyR provides R interfaces to Spark’s distributed machine learning algorithms (MLlib)</li>
-<li>Computations happing in the Spark cluster, not in R</li>
-</ul>
+<pre class = 'prettyprint lang-r'>mtcars_tbl &lt;- copy_to(sc, mtcars) # copy mtcars into spark
+# transform our data set, and then partition into &#39;training&#39;, &#39;test&#39;
+partitions &lt;- mtcars_tbl %&gt;%
+  filter(hp &gt;= 100) %&gt;%
+  mutate(cyl8 = cyl == 8) %&gt;%
+  sdf_partition(training = 0.5, test = 0.5, seed = 1099)
+# fit a linear model to the training dataset
+fit &lt;- partitions$training %&gt;%
+  ml_linear_regression(response = &quot;mpg&quot;, features = c(&quot;wt&quot;, &quot;cyl&quot;))</pre>
+
+</article></slide><slide class=""><hgroup><h2>Sparkapply</h2></hgroup><article  id="sparkapply">
+
+<pre class = 'prettyprint lang-r'>iris_tbl &lt;- copy_to(sc, iris, repartition = 2, overwrite = TRUE)
+iris_tbl %&gt;% spark_apply(
+  function(e) {
+    library(broom)
+    broom::tidy(lm(Petal_Width ~ Petal_Length, e)) },
+  names = c(&quot;term&quot;, &quot;estimate&quot;, &quot;std.error&quot;, &quot;statistic&quot;, &quot;p.value&quot;),
+  group_by = &quot;Species&quot;,
+  packages = FALSE
+)</pre>
 
 </article></slide><slide class=""><hgroup><h2>Analyzing NYC Taxi Data Set with Sparklyr and BigQuery</h2></hgroup><article  id="analyzing-nyc-taxi-data-set-with-sparklyr-and-bigquery">
 
-<p><a href='https://www.r-bloggers.com/new-york-city-taxi-limousine-commission-tlc-trip-data-analysis-using-sparklyr-and-google-bigquery/' title=''>https://www.r-bloggers.com/new-york-city-taxi-limousine-commission-tlc-trip-data-analysis-using-sparklyr-and-google-bigquery/</a></p>
+<pre class = 'prettyprint lang-r'>source(&#39;demos/GCP/dataproc-sparklyr/examples/sparklyr_bigquery_dataproc_demo.R&#39;)</pre>
+
+<p>For more info see <a href='https://www.r-bloggers.com/new-york-city-taxi-limousine-commission-tlc-trip-data-analysis-using-sparklyr-and-google-bigquery/' title=''>here</a></p>
 
 </article></slide><slide class=""><hgroup><h2>BigRQuery</h2></hgroup><article  id="bigrquery">
 
-<p><a href='https://cloud.google.com/blog/big-data/2017/04/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery' title=''>https://cloud.google.com/blog/big-data/2017/04/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery</a></p>
+<pre class = 'prettyprint lang-r'>library(bigrquery)
+project &lt;- &quot;&quot; # put your project ID here
+
+# Example query - select copies of files with content containing &quot;TODO&quot;
+sql &lt;- &quot;SELECT SUM(copies)
+ FROM [bigquery-public-data:github_repos.sample_contents]
+ WHERE NOT binary AND content LIKE &#39;%TODO%&#39;&quot;
+
+# Execute the query and store the result
+todo_copies &lt;- query_exec(sql, project = project, useLegacySql = FALSE)</pre>
+
+<p>For more info see <a href='https://cloud.google.com/blog/big-data/2017/04/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery' title=''>here</a></p>
 
 </article></slide><slide class=""><hgroup><h2>BigQueryR</h2></hgroup><article  id="bigqueryr">
 
-<p><a href='https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html' title=''>https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html</a></p>
+<p>For more info see <a href='https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html' title=''>here</a></p>
 
-</article></slide><slide class=""><hgroup><h2>Cloud ML</h2></hgroup><article  id="cloud-ml">
+</article></slide><slide class=""><hgroup><h2>CloudML</h2></hgroup><article  id="cloudml">
 
-<p><a href='https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html' title=''>https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html</a></p>
+</article></slide><slide class=""><hgroup><h2>Wrappers to Google Cloud SDK</h2></hgroup><article  id="wrappers-to-google-cloud-sdk">
+
+<p>CloudML additionally has some neat wrappers for the <code>gcloud</code> and <code>gsutil</code> CLI tools. In case we run R within a cloud instance, the CLI are automatically authenticated to our project. We thus can use the wrappers <code>gcloud_exec</code> and <code>ggsutil_exec</code> to interact with the cloud.</p>
+
+<pre class = 'prettyprint lang-r'>library(cloudml)</pre>
+
+<pre >## Loading required package: tfruns</pre>
+
+<pre class = 'prettyprint lang-r'>gcloud_exec(&#39;compute&#39;, &#39;instances&#39;, &#39;list&#39;, echo = T)</pre>
+
+<pre >## NAME                  ZONE            MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+## sparklyr-cluster-m    europe-west3-c  n1-standard-2               10.156.0.4   35.198.106.237  RUNNING
+## sparklyr-cluster-w-0  europe-west3-c  n1-highmem-2                10.156.0.5   35.198.122.230  RUNNING
+## sparklyr-cluster-w-1  europe-west3-c  n1-highmem-2                10.156.0.2   35.198.117.222  RUNNING
+## sparklyr-cluster-w-2  europe-west3-c  n1-highmem-2                10.156.0.3   35.198.180.0    RUNNING
+## rstudio               us-central1-c   n1-standard-2               10.128.0.2                   TERMINATED</pre>
+
+<p>For more info see <a href='https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html' title=''>here</a></p>
 
 </article></slide><slide class=""><hgroup><h2>Best practices - Data</h2></hgroup><article  id="best-practices---data">
 

@@ -16,10 +16,10 @@ knitr::opts_chunk$set(echo = FALSE)
 
 * Widely used data science software
 * Used by millions of data scientists, statisticians and analysts
-* Most powerful statistical programming language
-* Flexible, extensible and comprehensive for productivity
+    - Most powerful statistical programming language
+    - Flexible, extensible and comprehensive for productivity
 * Creates beautiful and unique data visualizations
-* As seen in New York Times or The Economist
+    - As seen in New York Times or The Economist
 * Thriving open-source community 
 * Leading edge of Statistics research
 
@@ -30,22 +30,22 @@ knitr::opts_chunk$set(echo = FALSE)
 * R is difficult to learn initially.
 * And yet, major companies use R for production data science on large databases.
 * Examples: 
-    - [blog.revolutionanalytics.com/applications/]
+    - blog.revolutionanalytics.com/applications/
 
 ##  Secrets to using R in production
 
-* Don’t use R alone. 
-    – Know what it’s good for! (And what it’s not good for.) 
-    – Use R as part of a production stack 
-* Use modern R workflows 
-    – Be able to hire great data scientists
+* Don’t use R alone.
+    - Know what it’s good for! (And what it’s not good for.) 
+    - Use R as part of a production stack 
+* Use modern R workflows
+    - Be able to hire great data scientists
 * Use R in conjunction with parallel/distributed data & compute architectures*
 
 ## Speeding up your R code 
 
 * On a single machine
     - Vectorize
-    - Use *data.table*
+    - Use `library("data.table")`
 * Move to the cloud and parallelize
     - Easy to parallelize
     - Hard to parallelize
@@ -91,7 +91,7 @@ knitr::opts_chunk$set(echo = FALSE)
 * In-memory engine 100x faster than map-reduce
 * Highly extensible, with machine-learning capabilities
 * Supports Scala, Java, Python, R ...
-* *Managed* cloud services available
+* *Managed* cloud services available:
     – GCP Dataproc
     - Azure Databricks
     - AWS EMR
@@ -100,23 +100,33 @@ knitr::opts_chunk$set(echo = FALSE)
 
 * sparklyr:
     - R interface to Spark
-    – open-source R package from RStudio
+    - open-source R package from RStudio
 * Move data between R and Spark
-* Keeps *References* to Spark Data Frames
-    – Familiar R operations, including dplyr syntax
-    – Computations offloaded to Spark cluster, and deferred until needed
+* Keeps *References* to Spark data frames
+    - Familiar R operations, including dplyr syntax
+    - Computations offloaded to Spark cluster, and deferred until needed
 * CPU/RAM/Disk consumed in cluster, not by R
-* Interfaces to Spark ML algorithms
 
+## Sparklyr ctnd
+
+* SparklyR provides R interfaces to Spark’s distributed machine learning
+  algorithms (MLlib)
+* Tons of algos:
+    - Classification: logistic regression, naive Bayes,...
+    - Regression: generalized linear regression, survival regression,...
+    - Decision trees, random forests, and gradient-boosted trees
+    - Recommendation: alternating least squares (ALS)
+    - Clustering: K-means, Gaussian mixtures (GMMs),...
+    - Topic modeling: latent Dirichlet allocation (LDA)
 
 ## Things to note 
 
 * All of the computation take place in the Spark cluster
-    – Computations are delayed until you need results
-    – Behind the scenes, Spark SQL statements are being written for you
+    - Computations are delayed until you need results
+    - Behind the scenes, Spark SQL statements are being written for you
 * None of the data comes back to R
-    – Until you call collect, when it becomes a tibble
-     – It’s only at this point you have to worry about data size
+    - Until you call collect, when it becomes a tibble
+    - It’s only at this point you have to worry about data size
 * Use ordinary dplyr syntax to interact with data in Spark cluster
 
 ## Getting code into the cloud
@@ -125,17 +135,17 @@ knitr::opts_chunk$set(echo = FALSE)
   [Google Source](https://cloud.google.com/source-repositories/)
   repos keep versioned code persistently
 * Docker images used to spawn nodes 
-    – Default: rocker/tidyverse:latest
-    – Lots of R packages pre-installed 
+    - Default: rocker/tidyverse:latest
+    - Lots of R packages pre-installed 
 * But this cross-validation also needs: 
-    – xgboost, e1071
+    - xgboost, e1071
 * Easy fix: build your own docker image
     - write a Dockerfile that builds on an already existing Rocker image
     - add packages and applications
 * Build Docker images in the cloud
     - 120 min free build time daily in GCP
 
-## Getting data into the cloud
+## Moving data around
 
 * Speed hierarchy
     - Superfast: In cloud, same region & zone
@@ -146,12 +156,11 @@ knitr::opts_chunk$set(echo = FALSE)
     - Manage data downloads from within a VM instance
     - Check whether to keep data on persistent data storage
 
-
 ## Packages to make R cloud-ready
 
 * General
-    - Tidyverse
-    -  sparklyr
+    - tidyverse
+    - sparklyr
     - foreach, future
 * Platform specific packages
     - Cloudyr: GCP, AWS
@@ -189,57 +198,168 @@ knitr::opts_chunk$set(echo = FALSE)
     - Needs significant amount Java recoding for every new problem
     - Run FlumeJava with embedded Java-based R interpreter Renyin
 * Might give highest computational throughput at given cost level
-* https://medium.com/google-cloud/cloud-dataflow-can-autoscale-r-programs-for-massively-parallel-data-processing-492b57bd732d
+* More info [here](https://medium.com/google-cloud/cloud-dataflow-can-autoscale-r-programs-for-massively-parallel-data-processing-492b57bd732d)
 
 
 ## GCP specific packages
 
-* Management of VMs
-    - googleComputeEngineR:
-    - googleAuthR: 
+* Compute Engine:
+    - [googleComputeEngineR]
+* Storage
+    - [googleCloudStorageR]
 * Managed frameworks
     - Spark: [sparklyr]()
-    - Big Query I: [bigRQuery]()
+    - Big Query I: [bigrquery]()
     - Big Query II: [bigQueryR](https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html)
-    - Big Table: 
     - Cloud ML: [cloudml]
 
+## Starting and managing GCE instances
 
-## Starting and Managing GCE instances
+Start an existing VM:
+
+```{R, eval=F, echo=T}
+library(googleComputeEngineR)
+## auto auth, project and zone pre-set
+## list your VMs in the project/zone
+the_list <- gce_list_instances()
+job <- gce_vm("rstudio")
+```
+
+Reset and stop VM:
+```{R, eval=F, echo=T}
+## reset instance
+job <- gce_vm_reset("rstudio")
+## check job until its finished
+gce_check_zone_op(job$name, wait = 20)
+## stop VM
+job <- gce_vm_stop("markdev")
+## check job until finished
+gce_check_zone_op(job$name, wait = 20)
+inst <- gce_get_instance("markdev")
+inst$status
+```
+
+
+## Running RStudio Server in the cloud
+
+```{R, eval=T, echo=T}
+library(googleComputeEngineR)
+vm <- gce_vm(template = "rstudio",
+             name = "rstudio-server",
+             username = "cmerk", password = "cmerk5678")
+```
+
 
 ## Managing data on Google Datascore
 
 ## Sparklyr & Dataproc
 
-## Machine Learning with SparklyR 
-
-```{R}
-example <- 2
+```{bash, eval=F, echo=T}
+cd demos/GCP/dataproc-sparklyr/
+source start_dataproc_cluster.sh
 ```
 
-* SparklyR provides R interfaces to Spark’s distributed machine learning
-  algorithms (MLlib)
-* Computations happing in the Spark cluster, not in R
+Once the Dataproc cluster is created, RStudio should run on the master node, listening to port `8787`.In RStudio, we execute:
 
+```{R, eval=F, echo=T}
+library(sparklyr)
+# Setting environment vars for Spark.
+Sys.setenv(SPARK_HOME="/usr/lib/spark")
+Sys.setenv(JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre/")
+
+config <- spark_config()
+
+# Connect to spark on master node
+sc <- spark_connect(master = "yarn-client", spark_home = "/usr/lib/spark")
+
+source('demos/GCP/dataproc-sparklyr/examples/sparklyr_dataproc_demo.R')
+```
+
+For more info check [here](demos/GCP/dataproc-sparklyr/README.md)
+
+## Machine Learning with SparklyR 
+
+```{R, eval=F, echo=T}
+mtcars_tbl <- copy_to(sc, mtcars) # copy mtcars into spark
+# transform our data set, and then partition into 'training', 'test'
+partitions <- mtcars_tbl %>%
+  filter(hp >= 100) %>%
+  mutate(cyl8 = cyl == 8) %>%
+  sdf_partition(training = 0.5, test = 0.5, seed = 1099)
+# fit a linear model to the training dataset
+fit <- partitions$training %>%
+  ml_linear_regression(response = "mpg", features = c("wt", "cyl"))
+```
+
+
+## Sparkapply
+
+```{R, eval=F, echo=T}
+iris_tbl <- copy_to(sc, iris, repartition = 2, overwrite = TRUE)
+iris_tbl %>% spark_apply(
+  function(e) {
+    library(broom)
+    broom::tidy(lm(Petal_Width ~ Petal_Length, e)) },
+  names = c("term", "estimate", "std.error", "statistic", "p.value"),
+  group_by = "Species",
+  packages = FALSE
+)
+```
 
 ## Analyzing NYC Taxi Data Set with Sparklyr and BigQuery
 
 
-https://www.r-bloggers.com/new-york-city-taxi-limousine-commission-tlc-trip-data-analysis-using-sparklyr-and-google-bigquery/
+```{R, eval=F, echo=T}
+source('demos/GCP/dataproc-sparklyr/examples/sparklyr_bigquery_dataproc_demo.R')
+```
+
+For more info see [here](https://www.r-bloggers.com/new-york-city-taxi-limousine-commission-tlc-trip-data-analysis-using-sparklyr-and-google-bigquery/)
 
 
 ## BigRQuery
 
-https://cloud.google.com/blog/big-data/2017/04/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery
+```{R, eval=F, echo=T}
+library(bigrquery)
+project <- "" # put your project ID here
+
+# Example query - select copies of files with content containing "TODO"
+sql <- "SELECT SUM(copies)
+ FROM [bigquery-public-data:github_repos.sample_contents]
+ WHERE NOT binary AND content LIKE '%TODO%'"
+
+# Execute the query and store the result
+todo_copies <- query_exec(sql, project = project, useLegacySql = FALSE)
+```
+
+For more info see [here](https://cloud.google.com/blog/big-data/2017/04/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery)
 
 
 ## BigQueryR
 
-https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html
+For more info see [here](https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html)
 
-## Cloud ML
+## CloudML
 
-https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html
+```{R, eval=F, echo=T}
+library(cloudml)
+cloudml_train("train.R")
+ls_runs()
+job <- cloudml_train("mnist_mlp.R")
+job_status(job)
+```
+
+## Wrappers to Google Cloud SDK
+
+CloudML additionally has some neat wrappers for the `gcloud` and `gsutil` CLI tools. In case we run R 
+within a cloud instance, the CLI are automatically authenticated to our project. We thus can use
+the wrappers `gcloud_exec` and `ggsutil_exec` to interact with the cloud.
+
+```{R, eval=T, echo=T}
+library(cloudml)
+gcloud_exec('compute', 'instances', 'list', echo = T)
+```
+
+For more info see [here](https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html)
 
 
 ## Best practices - Data
